@@ -56,6 +56,8 @@ const appCheck = initializeAppCheck(app, {
 
 This ensures smooth and fast experience for desktop users, enhancements will be upcoming for mobile.
 <br>
+Screenshots of UI and functionalities
+<br>
 ![Dashboard View](dashboard-view.jpg)
 <br>
 ![Drag & Drop](board&task-view.jpg)
