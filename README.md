@@ -45,3 +45,6 @@ const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider('your-public-site-key'),
   isTokenAutoRefreshEnabled: true,
 });
+```
+![Dashboard View](dashboard-view.jpg)
+![Drag & Drop](board&task-view.jpg)
