@@ -15,8 +15,7 @@ A **simple, secure, and responsive task management application** — built using
 - 📦 **Drag & Drop Tasks Across Columns** (`To Do`, `In Progress`, `Done`, etc.)
 - ☁️ **Firestore Database** for real-time sync
 - 📱 **Fully Responsive Design** using Bootstrap
-- 🌐 **Hosted on GitHub Pages** (Frontend)  
-  *(Optional Firebase Hosting can be used for enhanced deployment)*
+- 🌐 **Hosted on GitHub Pages** (Frontend) 
 
 ---
 
