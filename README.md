@@ -3,7 +3,7 @@
 A **simple, secure, and responsive task management application** — built using **vanilla JavaScript**, **Bootstrap**, and **Firebase Modular SDK**. Users can create boards, add/edit tasks, and move them between columns using intuitive **drag & drop** feature.
 
 👉 [**Live Demo (GitHub Pages)**](https://sanjayp29.github.io/TaskManager/)  
-👉 [**Live Demo (GitHub Pages)**](https://taskmanager-29.web.app/)  
+👉 [**Live Demo (Firebase)**](https://taskmanager-29.web.app/)  
 
 
 ## 🚀 Key Features
