@@ -47,4 +47,5 @@ const appCheck = initializeAppCheck(app, {
 });
 ```
 ![Dashboard View](dashboard-view.jpg)
+<br>
 ![Drag & Drop](board&task-view.jpg)
