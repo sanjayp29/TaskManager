@@ -38,12 +38,6 @@ A **simple, secure, and responsive task management application** — built using
 - App Check tokens are required for **Firestore access**.
 - Ensure your **reCAPTCHA site key** is registered in the Firebase console and initialized like so:
 
-## 🧪 Performance Insights
-
-- ✅ Scored overall **98 on Desktop** using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse)
-- 📱 Mobile score: 74 – will improvise in free time.
-
-This ensures smooth and fast experience for desktop users, enhancements will be upcoming for mobile.
 
 ```js
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
@@ -53,6 +47,15 @@ const appCheck = initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 });
 ```
+<br>
+
+## 🧪 Performance Insights
+
+- ✅ Scored overall **98 on Desktop** using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse)
+- 📱 Mobile score: 74 – will improvise in free time.
+
+This ensures smooth and fast experience for desktop users, enhancements will be upcoming for mobile.
+<br>
 ![Dashboard View](dashboard-view.jpg)
 <br>
 ![Drag & Drop](board&task-view.jpg)
