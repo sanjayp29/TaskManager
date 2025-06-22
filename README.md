@@ -1,4 +1,4 @@
-# 📝 Task Manager – Web App or Website
+# 📝 Task Manager – Website and Web Application
 
 A **simple, secure, and responsive task management application** — built using **vanilla JavaScript**, **Bootstrap**, and **Firebase Modular SDK**. Users can create boards, add/edit tasks, and move them between columns using intuitive **drag & drop** feature.
 
