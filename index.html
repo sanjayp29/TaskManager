@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- It will show loading screen by default on launching -->
+    <div id="loading-screen" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- the app ui display will be set to flex once DOM is loaded -->
+    <div id="app-ui" style="display: none;">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fa-solid fa-list-check"></i>
+                    Task Manager
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <div id="auth-section" class="d-flex flex-column flex-lg-row gap-2 my-2">
+                        <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            Login
+                        </button>
+                        <button class="btn btn-outline me-2" data-bs-toggle="modal" data-bs-target="#signupModal"
+                            style="background-color: rgba(0, 0, 0, 0.293) ; color:white; ">
+                            <i class="fa-solid fa-user-plus"></i>
+                            Sign Up
+                        </button>
+                    </div>
+                    <div id="user-section" style="display: none">
+                        <div class="dropdown"">
+                        <button class=" btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>
+                            <span id="username-display">User</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end  text-center text-md-start"
+                                style="background-color: rgba(255, 255, 255, 0.788) ; color:white; ">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 px-3 py-2" href="#"
+                                        id="logout">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content of the web page -->
+        <div class="container mt-3">
+            <!-- Board Management Section -->
+            <div id="board-management" class="container-fluid row justify-content-between m-1">
+                <!-- left items in a flex row -->
+                <div class=" col-auto d-flex  gap-4">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle my-2 h-75" type="button"
+                            data-bs-toggle="dropdown" style="align-items:start">
+                            <i class="fas fa-th-large me-1"></i>
+                            My Boards
+                        </button>
+                        <ul class="dropdown-menu"
+                            style="background-color: transparent; border: 1px solid rgba(255, 255, 255, 0.381) ;"
+                            id="boards-dropdown">
+                            <!-- created or existing boards will drop here -->
+                        </ul>
+                    </div>
+
+                    <button id="newBoardBtn" class="btn btn-success my-2 h-75" type="button">
+                        <i class="fas fa-plus me-1"></i>
+                        New Board
+                    </button>
+                </div>
+
+                <!--blank center(auto takes space,since it is justify content between)-->
+
+                <!--right item-->
+                <div class="input-group col-auto my-2 " style="width: 300px ;backdrop-filter: blur(6px);  ">
+                    <input type="text" class="form-control" id="search-input" placeholder="Search tasks..."
+                        style="background-color:rgba(73, 73, 73, 0.214) ; border: 1px solid rgba(255, 255, 255, 0.3);" />
+                    <button class="btn btn-outline" type="button" onclick="searchTasks()"
+                        style="background-color:rgba(73, 73, 73, 0.214) ;border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <i class="fas fa-search" style=" color:white; "></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Board Header -->
+            <div class="d-none justify-content-between align-items-center mt-3 m-1" id="board-header">
+                <div>
+                    <h2 id="board-title">My Board</h2>
+                    <p class="text-muted mb-0" id="board-description">
+                        Board description
+                    </p>
+                </div>
+            </div>
+
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="text-center py-5">
+                <div class="hero-section">
+                    <img src="todo.jpg" alt="Welcome" class="welcome-image img-fluid rounded-3 mb-4"
+                        style="max-height: 300px; object-fit: cover" />
+                    <h1 class="fw-normal display-3 mb-3">Welcome to Task Manager</h1>
+                    <p class="lead mb-4">
+                        Organize and Keep track of your Tasks with our Task Management System.
+                    </p>
+                    <button id="createFirstBoardBtn" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>
+                        Create Your First Board
+                    </button>
+                </div>
+            </div>
+
+            <!-- Board View -->
+            <div id="board-view" style="display: none">
+                <div class="row g-2 g-md-3" id="columns-container">
+                    <!--columns will be added here dynamically-->
+                </div>
+
+                <!--add new column button-->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary my-4" onclick="addNewColumn()">
+                        <i class="fas fa-plus me-2"></i>
+                        Add New Column
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--Modals for the functionalty-->
+        <!--login modal-->
+        <div class="modal fade" id="loginModal" tabindex="-1" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Login to Task Manager</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            style="background-color:rgb(255, 255, 255)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="login-form">
+                            <div class="mb-3">
+                                <label for="login-email" class="form-label">Email</label>
+                                <input type="email" style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    class="form-control" id="login-email" required="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="login-password" class="form-label">Password</label>
+                                <input type="password" style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552);"
+                                    class="form-control" id="login-password" required="">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border: none;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--signup modal-->
+        <div class="modal fade" id="signupModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New Task Manager Account</h5>
+                        <button type="button" class="btn-close" style="background-color:rgb(255, 255, 255)"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="signup-form">
+                            <div class="mb-3">
+                                <label for="signup-name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="signup-name"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Your Name" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="signup-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="signup-email"
+                                    placeholder="yourname@example.com"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="signup-password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="signup-password"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Must contain at least 6 digits." required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="signup-confirm-password"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Enter password again to confirm" required />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border: none;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--create board modal-->
+        <div class="modal fade" id="createBoardModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New Task Board</h5>
+                        <button type="button" class="btn-close" style="background-color:rgb(255, 255, 255)"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="create-board-form">
+                            <div class="mb-3">
+                                <label for="board-name" class="form-label">Board Name</label>
+                                <input type="text" class="form-control" id="board-name"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Title of your Task Board" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="board-desc" class="form-label">Description</label>
+                                <textarea class="form-control" id="board-desc" rows="3"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Describe the task types your board is intended to contain."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border: none;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="createBoard()">
+                            Create Board
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--create task modal-->
+        <div class="modal fade" id="createTaskModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New Task</h5>
+                        <button type="button" class="btn-close" style="background-color:rgb(255, 255, 255)"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="create-task-form">
+                            <div class="mb-3">
+                                <label for="task-title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="task-title"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Your task title goes here : )" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="task-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="task-description" rows="3"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"
+                                    placeholder="Provide a brief description of the task"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="task-priority" class="form-label">Priority</label>
+                                <select class="form-select" id="task-priority"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;">
+                                    <option class="priority" value="low">Low</option>
+                                    <option class="priority" value="medium" selected>Medium</option>
+                                    <option class="priority" value="high">High</option>
+                                    <option class="priority" value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="task-due-date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="task-due-date" />
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border:none">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="createTask()">
+                            Create Task
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--edit task modal-->
+        <div class="modal fade" id="editTaskModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Task</h5>
+                        <button type="button" class="btn-close" style="background-color:rgb(255, 255, 255)"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-task-form">
+                            <div class="mb-3">
+                                <label for="edit-task-title" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="edit-task-title"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-task-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="edit-task-description" rows="3"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-task-priority" class="form-label">Priority</label>
+                                <select class="form-select" id="edit-task-priority"
+                                    style="color:aliceblue; background-color:rgba(0, 0, 0, 0.552) ;">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-task-due-date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="edit-task-due-date" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border: none;">
+                        <button type="button" class="btn btn-danger" onclick="deleteTask()">
+                            Delete Task
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="updateTask()">
+                            Update Task
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--confirmation modal-->
+        <div class="modal fade" id="confirmModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                    style="color:aliceblue; background-color: rgba(0, 0, 0, 0.552); color: white; backdrop-filter: blur(5px); border-radius: 10px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalTitle">Confirm Action</h5>
+                        <button type="button" class="btn-close" style="background-color:rgb(255, 255, 255)"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" style="border: none;">
+                        <p id="confirmModalMessage">
+                            Are you sure you want to perform this action?
+                        </p>
+                    </div>
+                    <div class="modal-footer" style="border: none;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmActionBtn">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="mt-3"
+                style="text-align: center; color:rgb(0, 0, 0) ; font-weight:500 ; font-family:Arial, Helvetica, sans-serif; ">
+                &copy; Task Manager. All rights reserved.
+            </p>
+            <!-- <a style="margin-left: 10px; text-decoration:none ; text-align: center;font-family:Arial, Helvetica, sans-serif; "
+                    href="tel:+917000045936" class="text-light">Contact</a> -->
+            <p style="text-align: center;">
+                <a style=" text-decoration:none ; font-family:Arial, Helvetica, sans-serif; " href="tel:+917000045936"
+                    class="text-dark">Contact</a>
+                <a style="margin-left: 15px; text-decoration:none ; font-family:Arial, Helvetica, sans-serif; "
+                    href="mailto:sanjay2patil9@gmail.com" class="text-dark">Report Problems</a>
+
+            </p>
+
+        </footer>
+    </div>
+
+    <!--firebase-config js file-->
+    <script type="module" src="firebase-config.js"></script>
+
+    <!--local js file-->
+    <script type="module" src="script.js"></script>
+    <!--bootstrap script-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
