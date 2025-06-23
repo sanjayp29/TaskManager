@@ -12,23 +12,23 @@ A **simple, secure, and responsive task management application** — built using
 - ✅ **App Check Enabled** via **reCAPTCHA v3** for securing backend
 - 🗂️ **Create & Manage Boards**
 - 📝 **Add, Edit, and Delete Tasks with Priority and Due Dates**
-- 📦 **Drag & Drop Tasks Across Columns** (`To Do`, `In Progress`, `Done`, etc.)
+- 📦 **Drag & Drop Tasks Across Columns(in desktop, button for mobile version)** (`To Do`, `In Progress`, `Done`, etc.)
 - ☁️ **Firestore Database** for real-time sync
 - 📱 **Fully Responsive Design** using Bootstrap
-- 🌐 **Hosted on GitHub Pages** (Frontend) 
+- 🌐 **Hosted on GitHub Pages and Firebase**
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology          | Purpose                                      |
-|---------------------|----------------------------------------------|
-| HTML, CSS, JS       | Frontend logic and layout                    |
-| Bootstrap 5         | UI styling and responsive design             |
-| Firebase Auth       | User login and signup                        |
-| Firebase Firestore  | Database for storing boards/tasks/columns    |
-| Firebase App Check  | Secures access to backend with reCAPTCHA v3  |
-| GitHub Pages        | Deployment                                   |
+| Technology            | Purpose                                      |
+|-----------------------|----------------------------------------------|
+| HTML, CSS, JS         | Frontend logic and layout                    |
+| Bootstrap 5           | UI styling and responsive design             |
+| Firebase Auth         | User login and signup                        |
+| Firebase Firestore    | Database for storing boards/tasks/columns    |
+| Firebase App Check    | Secures access to backend with reCAPTCHA v3  |
+| GitHub Pages,Firebase | Deployment                                   |
 
 ---
 
@@ -37,8 +37,6 @@ A **simple, secure, and responsive task management application** — built using
 - Enabled **App Check** using **reCAPTCHA v3** to prevent abuse.
 - App Check tokens are required for **Firestore access**.
 - Ensure your **reCAPTCHA site key** is registered in the Firebase console and initialized like so:
-
-
 ```js
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
@@ -52,7 +50,7 @@ const appCheck = initializeAppCheck(app, {
 ## 🧪 Performance Insights
 
 - ✅ Scored overall **98 on Desktop** using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse)
-- 📱 Mobile score: 74 – will improvise in free time.
+- 📱 Mobile score: 74 – will improvise this in free time.
 
 This ensures smooth and fast experience for desktop users, enhancements will be upcoming for mobile.
 <br>
